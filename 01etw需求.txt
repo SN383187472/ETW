@@ -1,0 +1,19 @@
+生成一个word与excel互转格式内容的脚本，使用方式:
+etw.py -i 原始excel -o 输出word -F --CK1:value1 --CK2:value2 --HM:hm_value1
+ -i 读取原始的excel
+ -o 输出转换后的excel
+ -F 覆盖模式，开启覆盖模式必须配置--CK,根据CK参数对应值匹配，可选配置--HM,将HM参数对应值覆盖,不配置HM参数时，默认根据CK将所有列名对行名覆盖
+ --CK[1-4] 根字段，转换时的根匹配，可以设置最多4个，设置多个时，关系为and,不设置时默认转换不覆盖
+ --HM[1-20]列名与行名，转换时需要覆盖的列名或行名，可以最多设置20个
+eg:
+	etw.py -i source.xlsx -o dest.docx #将source.xlsx数据转化为word
+	etw.py -i source.xlsx -o dest.docx -F --CK1:val1 --CK1:val2 #根据source.xlsx的val1与val2列的值与dest.docx中行名的匹配是，对dest.docx中表中所有值进行覆盖，source.xlsx中匹配不到的默认新增
+	etw.py -source.xlsx -o dest.docx -F --CK1:val1 --HM1:hm_val1 --HM2:val2 #根据source.xlsx的val1列的值与dest.docx中每个表中行名的匹配，对dest.docx相应表中行名为hm_val1和hmval2的值进行覆盖，source.xlsx中匹配不到的默认新增
+
+
+1、word中每个表的每一行第一列的值称之为'行名'
+2、word中每个表的行名和excel中列名称的排序：试验标识、用例编号、用例标题、问题编号、问题等级、问题标题、测试步骤、首轮结果、首轮人员、首轮日期、原因分析、整改措施、承制方、整改日期、回归步骤、回归人员、回归日期
+3、设定四个自定义参数：CK1-4，允许用户自己设置1个或多个，多个时，参数之间关系为and；设定20个自定义参数：HM1-20
+
+6、从excel中每一行的数据填入word每个表，excel表列名称与word每个表的行名匹配填写，若word表没有对应列名，则按照前面定义的顺序为word表新增行
+7、将excel转化为word时，询问用户是否选择覆盖填入，若选择覆盖，请用户设置自定义参数CK1-4和HM1-20（若已设置过则跳过）,根据excel中列名为CK1-4和word表中CK1-4的值的匹配，若匹配则覆盖原有行名匹配HM1-20对应的值
